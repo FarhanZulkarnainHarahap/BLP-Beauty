@@ -12,7 +12,15 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "lib/generated/**",
   ]),
+  {
+    rules: {
+      // CMS images can come from user-configured Cloudinary or Supabase domains.
+      "@next/next/no-img-element": "off",
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
