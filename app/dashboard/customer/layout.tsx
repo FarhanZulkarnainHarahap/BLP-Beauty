@@ -1,7 +1,14 @@
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { requireCustomer } from "@/lib/session";
+import { AnnouncementBar } from "@/components/public/AnnouncementBar";
+import { Footer } from "@/components/public/Footer";
+import { Navbar } from "@/components/public/Navbar";
 
-export default async function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
-  const session = await requireCustomer();
-  return <DashboardShell user={session.user}>{children}</DashboardShell>;
+export default function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <AnnouncementBar />
+      <Navbar />
+      <main>{children}</main>
+      <Footer />
+    </>
+  );
 }

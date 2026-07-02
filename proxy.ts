@@ -10,6 +10,8 @@ const dashboardRoles: Array<{ path: string; role: Role }> = [
   { path: "/dashboard/super_admin", role: "SUPER_ADMIN" },
 ];
 
+const protectedCustomerPaths = ["/dashboard/customer/profile", "/dashboard/customer/notifications"];
+
 const dashboardPathForRole = (role: Role) => {
   if (role === "ADMIN") return "/dashboard/admin";
   if (role === "SUPER_ADMIN") return "/dashboard/super_admin";
@@ -36,18 +38,27 @@ export async function proxy(request: NextRequest) {
   const rule = dashboardRoles.find(({ path }) => request.nextUrl.pathname.startsWith(path));
   if (!rule) return NextResponse.next();
 
+  const customerGuestRoute =
+    rule.role === "USER" &&
+    !protectedCustomerPaths.some((path) => request.nextUrl.pathname.startsWith(path));
   const cookieHeader = request.headers.get("cookie");
-  if (!cookieHeader || !API_URL) return loginRedirect(request);
+  if (!cookieHeader || !API_URL) {
+    return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
+  }
 
   try {
     const response = await fetch(`${API_URL}/api/auth/session`, {
       headers: { Cookie: cookieHeader },
       cache: "no-store",
     });
-    if (!response.ok) return loginRedirect(request);
+    if (!response.ok) {
+      return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
+    }
 
     const session = (await response.json()) as AuthSession | null;
-    if (!session?.user?.id) return loginRedirect(request);
+    if (!session?.user?.id) {
+      return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
+    }
 
     if (session.user.role !== rule.role) {
       return NextResponse.redirect(new URL(dashboardPathForRole(session.user.role), request.url));
@@ -55,7 +66,7 @@ export async function proxy(request: NextRequest) {
 
     return NextResponse.next();
   } catch {
-    return loginRedirect(request);
+    return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
   }
 }
 
