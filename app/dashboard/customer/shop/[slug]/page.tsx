@@ -19,7 +19,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   return (
     <section className="shell py-10">
       <Link
-        href="/dashboard/customer/shop"
+        href="/shop"
         className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider"
       >
         <ArrowLeft size={15} />

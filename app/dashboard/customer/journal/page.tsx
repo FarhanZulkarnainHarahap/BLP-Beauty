@@ -35,7 +35,7 @@ export default async function Articles({
         <div className="mt-14 grid gap-8 md:grid-cols-3">
           {data.length ? (
             data.map((a) => (
-              <Link href={`/dashboard/customer/journal/${a.slug}`} key={a.id} className="group">
+              <Link href={`/journal/${a.slug}`} key={a.id} className="group">
                 <div className="aspect-[4/3] overflow-hidden rounded-[24px] bg-[#ead2d3]">
                   {a.imageUrl && (
                     <img

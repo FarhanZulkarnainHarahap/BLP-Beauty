@@ -7,10 +7,10 @@ import { signOut } from "@/lib/auth-client";
 import type { AuthSession } from "@/types";
 
 const links = [
-  ["Shop", "/dashboard/customer/shop"],
-  ["Campaign", "/dashboard/customer/campaign"],
-  ["Journal", "/dashboard/customer/journal"],
-  ["Our story", "/dashboard/customer/our-story"],
+  ["Shop", "/shop"],
+  ["Campaign", "/campaign"],
+  ["Journal", "/journal"],
+  ["Our story", "/our-story"],
 ];
 
 function ProfileMenu() {
@@ -58,7 +58,7 @@ function ProfileMenu() {
       ? "/dashboard/admin"
       : user?.role === "SUPER_ADMIN"
         ? "/dashboard/super_admin"
-        : "/dashboard/customer/profile";
+        : "/profile";
 
   return (
     <div ref={containerRef} className="relative">
@@ -107,7 +107,7 @@ function ProfileMenu() {
                   Account
                 </Link>
                 <Link
-                  href="/dashboard/customer/notifications"
+                  href="/notifications"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm hover:bg-[#f1e6d8]"
                 >
@@ -137,7 +137,7 @@ function ProfileMenu() {
               </div>
               <nav className="p-2">
                 <Link
-                  href="/login?callbackUrl=/dashboard/customer"
+                  href="/login?callbackUrl=/"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm hover:bg-[#f1e6d8]"
                 >
@@ -145,7 +145,7 @@ function ProfileMenu() {
                   Login
                 </Link>
                 <Link
-                  href="/signup?callbackUrl=/dashboard/customer"
+                  href="/signup?callbackUrl=/"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm hover:bg-[#f1e6d8]"
                 >
@@ -153,7 +153,7 @@ function ProfileMenu() {
                   Sign up
                 </Link>
                 <Link
-                  href="/login?callbackUrl=/dashboard/customer/notifications"
+                  href="/login?callbackUrl=/notifications"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm hover:bg-[#f1e6d8]"
                 >
@@ -194,7 +194,7 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <Link href="/dashboard/customer" className="serif text-2xl tracking-[.18em]">
+        <Link href="/" className="serif text-2xl tracking-[.18em]">
           BLP
         </Link>
         <div className="flex items-center gap-3 md:gap-7">

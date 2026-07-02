@@ -47,10 +47,7 @@ export async function StorefrontHome() {
                 {banner.buttonText}
                 <ArrowRight size={15} />
               </Link>
-              <Link
-                href="/dashboard/customer/shop?sort=newest"
-                className="btn !border-white/50 !bg-transparent"
-              >
+              <Link href="/shop?sort=newest" className="btn !border-white/50 !bg-transparent">
                 Find your shade
               </Link>
             </div>
@@ -95,7 +92,7 @@ export async function StorefrontHome() {
               <h2 className="section-title mt-3">Your beauty picks</h2>
             </div>
             <Link
-              href="/dashboard/customer/shop"
+              href="/shop"
               className="hidden items-center gap-2 text-xs font-bold uppercase tracking-wider md:flex"
             >
               Shop all <ArrowRight size={15} />
@@ -120,7 +117,7 @@ export async function StorefrontHome() {
           {categories.map((c) => (
             <Link
               key={c.id}
-              href={`/dashboard/customer/shop?category=${c.slug}`}
+              href={`/shop?category=${c.slug}`}
               className="group relative aspect-[3/4] overflow-hidden rounded-[24px] bg-[#ead2d3]"
             >
               {c.imageUrl && (
@@ -153,7 +150,7 @@ export async function StorefrontHome() {
             <h2 className="section-title mt-4">{campaign.title}</h2>
             <p className="mt-6 leading-7 text-white/75">{campaign.description}</p>
             <Link
-              href="/dashboard/customer/campaign"
+              href="/campaign"
               className="btn mt-8 self-start !border-white !bg-white !text-[#6f1f35]"
             >
               {campaign.buttonText || "Discover campaign"}

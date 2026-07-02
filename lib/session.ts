@@ -21,7 +21,7 @@ export async function getSession(): Promise<AuthSession | null> {
 export function dashboardPathForRole(role: Role) {
   if (role === "ADMIN") return "/dashboard/admin";
   if (role === "SUPER_ADMIN") return "/dashboard/super_admin";
-  return "/dashboard/customer";
+  return "/";
 }
 
 export async function requireRole(role: Role) {

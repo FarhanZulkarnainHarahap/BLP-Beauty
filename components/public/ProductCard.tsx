@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
       whileHover={{ y: -5 }}
       transition={{ duration: 0.35 }}
     >
-      <Link href={`/dashboard/customer/shop/${product.slug}`} className="group block">
+      <Link href={`/shop/${product.slug}`} className="group block">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] bg-[#eee2d8]">
           <img
             src={product.imageUrl}

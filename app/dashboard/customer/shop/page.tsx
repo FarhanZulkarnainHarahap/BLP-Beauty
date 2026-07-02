@@ -79,7 +79,7 @@ export default async function Products({
                 page === meta.page ? "bg-[#6f1f35] text-white" : "border-[#4a302933]",
               )}
               href={{
-                pathname: "/dashboard/customer/shop",
+                pathname: "/shop",
                 query: { ...q, page },
               }}
             >

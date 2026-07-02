@@ -4,18 +4,16 @@ import type { AuthSession, Role } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
 
-const dashboardRoles: Array<{ path: string; role: Role }> = [
-  { path: "/dashboard/admin", role: "ADMIN" },
-  { path: "/dashboard/customer", role: "USER" },
-  { path: "/dashboard/super_admin", role: "SUPER_ADMIN" },
-];
+const publicCustomerPaths = ["/", "/shop", "/campaign", "/journal", "/our-story"];
+const protectedCustomerPaths = ["/profile", "/notifications"];
 
-const protectedCustomerPaths = ["/dashboard/customer/profile", "/dashboard/customer/notifications"];
+const matchesPath = (pathname: string, path: string) =>
+  pathname === path || (path !== "/" && pathname.startsWith(`${path}/`));
 
 const dashboardPathForRole = (role: Role) => {
   if (role === "ADMIN") return "/dashboard/admin";
   if (role === "SUPER_ADMIN") return "/dashboard/super_admin";
-  return "/dashboard/customer";
+  return "/";
 };
 
 function loginRedirect(request: NextRequest) {
@@ -24,24 +22,36 @@ function loginRedirect(request: NextRequest) {
   return NextResponse.redirect(login);
 }
 
+function routeRole(pathname: string): Role | null {
+  if (matchesPath(pathname, "/dashboard/admin")) return "ADMIN";
+  if (matchesPath(pathname, "/dashboard/super_admin")) return "SUPER_ADMIN";
+  if (
+    publicCustomerPaths.some((path) => matchesPath(pathname, path)) ||
+    protectedCustomerPaths.some((path) => matchesPath(pathname, path)) ||
+    matchesPath(pathname, "/dashboard/customer")
+  ) {
+    return "USER";
+  }
+  return null;
+}
+
 // Next.js 16 renamed middleware.ts to proxy.ts. This is the route middleware.
 export async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/dashboard/cutomer")) {
+    const suffix = request.nextUrl.pathname.replace("/dashboard/cutomer", "");
     const corrected = request.nextUrl.clone();
-    corrected.pathname = request.nextUrl.pathname.replace(
-      "/dashboard/cutomer",
-      "/dashboard/customer",
-    );
+    corrected.pathname = suffix || "/";
     return NextResponse.redirect(corrected);
   }
 
-  const rule = dashboardRoles.find(({ path }) => request.nextUrl.pathname.startsWith(path));
-  if (!rule) return NextResponse.next();
+  const requiredRole = routeRole(request.nextUrl.pathname);
+  if (!requiredRole) return NextResponse.next();
 
   const customerGuestRoute =
-    rule.role === "USER" &&
-    !protectedCustomerPaths.some((path) => request.nextUrl.pathname.startsWith(path));
+    requiredRole === "USER" &&
+    !protectedCustomerPaths.some((path) => matchesPath(request.nextUrl.pathname, path));
   const cookieHeader = request.headers.get("cookie");
+
   if (!cookieHeader || !API_URL) {
     return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
   }
@@ -60,7 +70,7 @@ export async function proxy(request: NextRequest) {
       return customerGuestRoute ? NextResponse.next() : loginRedirect(request);
     }
 
-    if (session.user.role !== rule.role) {
+    if (session.user.role !== requiredRole) {
       return NextResponse.redirect(new URL(dashboardPathForRole(session.user.role), request.url));
     }
 
@@ -72,6 +82,13 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
+    "/shop/:path*",
+    "/campaign",
+    "/journal/:path*",
+    "/our-story",
+    "/profile",
+    "/notifications",
     "/dashboard/admin/:path*",
     "/dashboard/customer/:path*",
     "/dashboard/super_admin/:path*",

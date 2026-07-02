@@ -12,7 +12,7 @@ export default async function SignUp({
   const callbackUrl =
     requestedCallback?.startsWith("/") && !requestedCallback.startsWith("//")
       ? requestedCallback
-      : "/dashboard/customer";
+      : "/";
 
   return (
     <main className="grid min-h-screen bg-[#f1e6d8] md:grid-cols-2">
@@ -24,7 +24,7 @@ export default async function SignUp({
       />
       <section className="flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-[32px] bg-[#fbf7f1] p-8 shadow-[0_30px_80px_#4a302920] md:p-12">
-          <Link href="/dashboard/customer" className="serif text-2xl tracking-[.18em]">
+          <Link href="/" className="serif text-2xl tracking-[.18em]">
             BLP
           </Link>
           <p className="eyebrow mt-12">Join the community</p>

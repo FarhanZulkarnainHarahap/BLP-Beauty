@@ -27,7 +27,7 @@ export default function About() {
             performance that stays with you. No intimidating rules—just better tools for becoming
             more yourself.
           </p>
-          <Link href="/dashboard/customer/shop" className="btn mt-8 self-start">
+          <Link href="/shop" className="btn mt-8 self-start">
             Explore the collection
           </Link>
         </div>

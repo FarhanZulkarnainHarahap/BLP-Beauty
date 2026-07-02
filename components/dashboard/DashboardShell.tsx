@@ -32,12 +32,12 @@ type NavigationItem = {
 
 const navigation: Record<Role, NavigationItem[]> = {
   USER: [
-    { label: "Home", href: "/dashboard/customer", icon: Home },
-    { label: "Shop", href: "/dashboard/customer/shop", icon: ShoppingBag },
-    { label: "Campaign", href: "/dashboard/customer/campaign", icon: GalleryVerticalEnd },
-    { label: "Journal", href: "/dashboard/customer/journal", icon: BookOpen },
-    { label: "Our story", href: "/dashboard/customer/our-story", icon: Heart },
-    { label: "Profile", href: "/dashboard/customer/profile", icon: UserRound },
+    { label: "Home", href: "/", icon: Home },
+    { label: "Shop", href: "/shop", icon: ShoppingBag },
+    { label: "Campaign", href: "/campaign", icon: GalleryVerticalEnd },
+    { label: "Journal", href: "/journal", icon: BookOpen },
+    { label: "Our story", href: "/our-story", icon: Heart },
+    { label: "Profile", href: "/profile", icon: UserRound },
   ],
   ADMIN: [
     { label: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
