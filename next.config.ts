@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: "/dashboard/customer/shop",
+        destination: "/shop",
+        permanent: false,
+      },
+      {
         source: "/dashboard/customer/shop/:path*",
         destination: "/shop/:path*",
         permanent: false,
@@ -20,6 +25,11 @@ const nextConfig: NextConfig = {
       {
         source: "/dashboard/customer/campaign",
         destination: "/campaign",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/customer/journal",
+        destination: "/journal",
         permanent: false,
       },
       {
@@ -43,6 +53,11 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: "/products",
+        destination: "/shop",
+        permanent: false,
+      },
+      {
         source: "/products/:path*",
         destination: "/shop/:path*",
         permanent: false,
@@ -50,6 +65,11 @@ const nextConfig: NextConfig = {
       {
         source: "/campaigns",
         destination: "/campaign",
+        permanent: false,
+      },
+      {
+        source: "/articles",
+        destination: "/journal",
         permanent: false,
       },
       {
