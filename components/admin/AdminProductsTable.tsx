@@ -65,7 +65,7 @@ export function AdminProductsTable({ initial }: { initial: Product[] }) {
                   <div className="flex justify-end gap-3">
                     <Link
                       className="rounded-lg border px-3 py-2 text-xs font-bold"
-                      href={`/admin/products/${product.id}/edit`}
+                      href={`/dashboard/admin/products/${product.id}/edit`}
                     >
                       Edit
                     </Link>

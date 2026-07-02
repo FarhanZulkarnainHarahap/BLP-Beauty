@@ -72,7 +72,7 @@ export function ProductForm({ id }: { id?: string }) {
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error?.message);
-      router.push("/admin/products");
+      router.push("/dashboard/admin/products");
       router.refresh();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not save product");

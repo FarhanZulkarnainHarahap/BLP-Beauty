@@ -3,10 +3,10 @@ import Link from "next/link";
 import { Menu, Search, UserRound, X } from "lucide-react";
 import { useState } from "react";
 const links = [
-  ["Shop", "/products"],
-  ["Campaigns", "/campaigns"],
-  ["Journal", "/articles"],
-  ["Our story", "/about"],
+  ["Shop", "/dashboard/customer/shop"],
+  ["Campaign", "/dashboard/customer/campaign"],
+  ["Journal", "/dashboard/customer/journal"],
+  ["Our story", "/dashboard/customer/our-story"],
 ];
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -41,11 +41,11 @@ export function Navbar() {
             </Link>
           ))}
           <Search size={18} />
-          <Link href="/login">
+          <Link href="/auth-redirect">
             <UserRound size={18} />
           </Link>
         </nav>
-        <Link href="/login" className="md:hidden">
+        <Link href="/auth-redirect" className="md:hidden">
           <UserRound size={20} />
         </Link>
       </div>

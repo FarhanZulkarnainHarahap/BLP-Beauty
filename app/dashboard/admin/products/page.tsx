@@ -14,7 +14,7 @@ export default async function AdminProducts() {
           <p className="eyebrow">Catalogue</p>
           <h1 className="mt-2 serif text-4xl">Products</h1>
         </div>
-        <Link className="btn" href="/admin/products/create">
+        <Link className="btn" href="/dashboard/admin/products/create">
           Create product
         </Link>
       </div>

@@ -1,7 +1,17 @@
 import Link from "next/link";
 import { LoginButtons } from "@/components/public/LoginButtons";
 export const metadata = { title: "Sign in" };
-export default function Login() {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>;
+}) {
+  const requestedCallback = (await searchParams).callbackUrl;
+  const callbackUrl =
+    requestedCallback?.startsWith("/") && !requestedCallback.startsWith("//")
+      ? requestedCallback
+      : "/auth-redirect";
+
   return (
     <main className="grid min-h-screen bg-[#f1e6d8] md:grid-cols-2">
       <section
@@ -22,7 +32,7 @@ export default function Login() {
             the browser.
           </p>
           <div className="mt-8">
-            <LoginButtons />
+            <LoginButtons callbackUrl={callbackUrl} />
           </div>
           <p className="mt-8 text-center text-xs text-[#927d75]">
             By continuing, you agree to our privacy and account terms.

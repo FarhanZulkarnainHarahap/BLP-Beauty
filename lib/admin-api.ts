@@ -1,9 +1,9 @@
 import { apiUrl } from "./api";
-import { requireAdmin } from "./session";
+import { requireStaff } from "./session";
 import { cookies } from "next/headers";
 import type { ApiResponse } from "@/types";
 export async function adminApi<T>(path: string, init: RequestInit = {}): Promise<ApiResponse<T>> {
-  await requireAdmin();
+  await requireStaff();
   const cookieHeader = (await cookies()).toString();
   const response = await fetch(apiUrl(path), {
     ...init,

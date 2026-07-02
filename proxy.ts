@@ -1,25 +1,69 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import type { AuthSession, Role } from "@/types";
 
-const developmentCookie = "authjs.session-token";
-const productionCookie = "__Secure-authjs.session-token";
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
 
-export function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname === "/admin/login") {
+const dashboardRoles: Array<{ path: string; role: Role }> = [
+  { path: "/dashboard/admin", role: "ADMIN" },
+  { path: "/dashboard/customer", role: "USER" },
+  { path: "/dashboard/super_admin", role: "SUPER_ADMIN" },
+];
+
+const dashboardPathForRole = (role: Role) => {
+  if (role === "ADMIN") return "/dashboard/admin";
+  if (role === "SUPER_ADMIN") return "/dashboard/super_admin";
+  return "/dashboard/customer";
+};
+
+function loginRedirect(request: NextRequest) {
+  const login = new URL("/login", request.url);
+  login.searchParams.set("callbackUrl", `${request.nextUrl.pathname}${request.nextUrl.search}`);
+  return NextResponse.redirect(login);
+}
+
+// Next.js 16 renamed middleware.ts to proxy.ts. This is the route middleware.
+export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/dashboard/cutomer")) {
+    const corrected = request.nextUrl.clone();
+    corrected.pathname = request.nextUrl.pathname.replace(
+      "/dashboard/cutomer",
+      "/dashboard/customer",
+    );
+    return NextResponse.redirect(corrected);
+  }
+
+  const rule = dashboardRoles.find(({ path }) => request.nextUrl.pathname.startsWith(path));
+  if (!rule) return NextResponse.next();
+
+  const cookieHeader = request.headers.get("cookie");
+  if (!cookieHeader || !API_URL) return loginRedirect(request);
+
+  try {
+    const response = await fetch(`${API_URL}/api/auth/session`, {
+      headers: { Cookie: cookieHeader },
+      cache: "no-store",
+    });
+    if (!response.ok) return loginRedirect(request);
+
+    const session = (await response.json()) as AuthSession | null;
+    if (!session?.user?.id) return loginRedirect(request);
+
+    if (session.user.role !== rule.role) {
+      return NextResponse.redirect(new URL(dashboardPathForRole(session.user.role), request.url));
+    }
+
     return NextResponse.next();
+  } catch {
+    return loginRedirect(request);
   }
-
-  const sessionToken =
-    request.cookies.get(productionCookie) ?? request.cookies.get(developmentCookie);
-
-  if (!sessionToken) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
-  }
-
-  // The protected server layout validates the database session and role.
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/dashboard/admin/:path*",
+    "/dashboard/customer/:path*",
+    "/dashboard/super_admin/:path*",
+    "/dashboard/cutomer/:path*",
+  ],
 };
