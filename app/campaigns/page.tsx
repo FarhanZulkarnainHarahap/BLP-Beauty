@@ -29,7 +29,7 @@ export default async function Campaigns() {
                     />
                   </div>
                   <div className="p-7">
-                    <p className="eyebrow">MARA edit</p>
+                    <p className="eyebrow">BLP edit</p>
                     <h2 className="mt-2 serif text-3xl">{c.title}</h2>
                     <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6d5951]">
                       {c.description}

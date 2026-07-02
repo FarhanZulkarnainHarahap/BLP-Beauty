@@ -5,7 +5,7 @@ export default function AdminLogin() {
     <main className="grid min-h-screen place-items-center bg-[#2d201c] p-6">
       <div className="w-full max-w-md rounded-[30px] bg-[#fbf7f1] p-9">
         <Link href="/" className="serif text-2xl tracking-[.18em]">
-          MARA
+          BLP
         </Link>
         <p className="eyebrow mt-10">Studio access</p>
         <h1 className="serif mt-3 text-4xl">Sign in to the beauty desk.</h1>

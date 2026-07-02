@@ -1,6 +1,6 @@
-import type { Session } from "next-auth";
+import type { AuthUser } from "@/types";
 import { SignOutButton } from "./SignOutButton";
-export function AdminTopbar({ user }: { user: Session["user"] }) {
+export function AdminTopbar({ user }: { user: AuthUser }) {
   return (
     <header className="flex h-20 items-center justify-between border-b border-[#4a30291f] bg-white px-5 md:px-8">
       <div>

@@ -1,16 +1,16 @@
-import { API_URL } from "./api";
-import { createInternalToken } from "./internal-token";
+import { apiUrl } from "./api";
 import { requireAdmin } from "./session";
+import { cookies } from "next/headers";
 import type { ApiResponse } from "@/types";
 export async function adminApi<T>(path: string, init: RequestInit = {}): Promise<ApiResponse<T>> {
-  const session = await requireAdmin();
-  const token = await createInternalToken(session.user);
-  const response = await fetch(`${API_URL}${path}`, {
+  await requireAdmin();
+  const cookieHeader = (await cookies()).toString();
+  const response = await fetch(apiUrl(path), {
     ...init,
     cache: "no-store",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      ...(init.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
+      Cookie: cookieHeader,
       ...init.headers,
     },
   });

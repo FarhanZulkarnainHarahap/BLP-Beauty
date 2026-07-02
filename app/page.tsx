@@ -160,7 +160,7 @@ export default async function Home() {
         </section>
       )}
       <section className="shell py-24 text-center">
-        <p className="eyebrow">Notes from MARA</p>
+        <p className="eyebrow">Notes from BLP</p>
         <h2 className="section-title mt-4">A little beauty in your inbox.</h2>
         <p className="mt-4 text-sm text-[#76645d]">
           First looks, thoughtful tips, and private offers. Only the good stuff.

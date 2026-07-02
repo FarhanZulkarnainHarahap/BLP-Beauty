@@ -13,7 +13,7 @@ export default function Login() {
       <section className="flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-[32px] bg-[#fbf7f1] p-8 shadow-[0_30px_80px_#4a302920] md:p-12">
           <Link href="/" className="serif text-2xl tracking-[.18em]">
-            MARA
+            BLP
           </Link>
           <p className="eyebrow mt-12">Welcome in</p>
           <h1 className="serif mt-3 text-5xl leading-none">Your beauty space awaits.</h1>

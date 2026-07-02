@@ -8,7 +8,7 @@ export default function About() {
         <p className="eyebrow">Our story</p>
         <h1 className="display mx-auto mt-5 max-w-5xl">Makeup should feel like possibility.</h1>
         <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-[#66534c]">
-          MARA began with a simple belief: beauty is not one finished look. It is every mood,
+          BLP Beauty began with a simple belief: beauty is not one finished look. It is every mood,
           experiment, quiet ritual, and bold choice that feels true to you.
         </p>
       </section>

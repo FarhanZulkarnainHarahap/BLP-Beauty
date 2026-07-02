@@ -18,7 +18,7 @@ export default async function Articles({
       <section className="shell py-16">
         <div className="grid gap-8 md:grid-cols-2 md:items-end">
           <div>
-            <p className="eyebrow">Notes from MARA</p>
+            <p className="eyebrow">Notes from BLP</p>
             <h1 className="display mt-3">The journal.</h1>
           </div>
           <form className="flex gap-2">

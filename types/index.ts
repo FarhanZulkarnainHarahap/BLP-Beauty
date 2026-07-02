@@ -1,4 +1,15 @@
 export type Role = "USER" | "ADMIN" | "SUPER_ADMIN";
+export type AuthUser = {
+  id: string;
+  role: Role;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+};
+export type AuthSession = {
+  user: AuthUser;
+  expires: string;
+};
 export type Category = {
   id: string;
   name: string;

@@ -23,7 +23,7 @@ export function AdminSidebar({ role }: { role: string }) {
   return (
     <aside className="hidden min-h-screen w-64 shrink-0 bg-[#2d201c] p-6 text-[#fbf7f1] lg:block">
       <Link href="/" className="serif text-2xl tracking-[.18em]">
-        MARA
+        BLP
       </Link>
       <p className="mt-2 text-[9px] uppercase tracking-[.2em] text-white/40">Content studio</p>
       <nav className="mt-12 grid gap-1">

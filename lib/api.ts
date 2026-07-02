@@ -1,9 +1,14 @@
 import type { ApiResponse } from "@/types";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+
+export function apiUrl(path = "") {
+  if (!API_URL) throw new Error("NEXT_PUBLIC_API_URL is not configured");
+  return `${API_URL}${path}`;
+}
 
 export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<ApiResponse<T>> {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(apiUrl(path), {
     ...init,
     headers: {
       ...(init.body instanceof FormData ? {} : { "Content-Type": "application/json" }),

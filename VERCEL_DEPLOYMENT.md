@@ -1,9 +1,8 @@
 # Deploy tiga project ke Vercel
 
-Project ini tetap memakai tiga folder yang sudah ada. Workspace root saat ini bukan repository Git;
-hanya folder `web` yang memiliki repository sendiri. Karena itu, cara paling langsung adalah deploy
-dengan Vercel CLI dari setiap folder. Setiap perintah pertama akan membuat/link satu project Vercel
-yang berbeda.
+Project ini tetap memakai tiga folder yang sudah ada dan masing-masing backend memiliki repository
+Git sendiri. Cara paling langsung adalah deploy dengan Vercel CLI dari setiap folder. Setiap
+perintah pertama akan membuat/link satu project Vercel yang berbeda.
 
 ```bash
 cd node.js-express.js
@@ -16,9 +15,8 @@ cd ../web
 npm run deploy
 ```
 
-Gunakan `npm run deploy:prod` setelah preview deployment sudah benar. Jika ingin auto-deploy dari
-Git, buat tiga repository terpisah atau rapikan workspace menjadi satu repository induk secara
-sengaja. Jangan menghapus `.git` di dalam `web` tanpa memindahkan riwayat commit terlebih dahulu.
+Gunakan `npm run deploy:prod` setelah preview deployment sudah benar. Untuk auto-deploy, hubungkan
+repository masing-masing project ke Vercel.
 
 ## 1. Siapkan database
 
@@ -32,18 +30,26 @@ npm run db:migrate
 npm run db:seed
 ```
 
-Backend Express, backend Nest, dan frontend Auth.js harus memakai `DATABASE_URL` database yang sama.
-Jangan menjalankan migration dari proses build Vercel.
+Backend Express dan backend Nest harus memakai `DATABASE_URL` pooled yang sama. Gunakan koneksi
+non-pooled sebagai `DIRECT_URL` untuk migration. Web tidak terhubung langsung ke database. Jangan
+menjalankan migration dari proses build Vercel.
 
 ## 2. Project backend Express
 
 - Jalankan CLI dari: `node.js-express.js`
-- Framework Preset: Other
+- Framework Preset: Express
 - Install Command: `npm install`
 - Environment Variables:
   - `DATABASE_URL`
+  - `DIRECT_URL`
   - `JWT_SECRET`
   - `INTERNAL_API_SECRET`
+  - `AUTH_SECRET`
+  - `AUTH_TRUST_HOST=true`
+  - `AUTH_GOOGLE_ID`
+  - `AUTH_GOOGLE_SECRET`
+  - `AUTH_FACEBOOK_ID`
+  - `AUTH_FACEBOOK_SECRET`
   - `CLOUDINARY_CLOUD_NAME`
   - `CLOUDINARY_API_KEY`
   - `CLOUDINARY_API_SECRET`
@@ -54,15 +60,15 @@ Setelah deploy, tes `https://nama-express.vercel.app/health`.
 ## 3. Project backend Nest
 
 - Jalankan CLI dari: `bun.js-nest.js`
-- Framework Preset: Other
+- Framework Preset: NestJS
 - Install Command: `npm install`
-- Environment Variables sama seperti Express.
+- Environment Variables sama persis seperti Express, termasuk database, Auth.js/OAuth, dan
+  Cloudinary.
 
-Deployment Vercel memakai runtime Node.js yang stabil melalui Nest Express adapter. Development lokal
-tetap memakai Bun. Bun Runtime Vercel masih Public Beta dan Nest belum termasuk framework yang
-didukung resmi, jadi konfigurasi production ini sengaja memilih jalur yang lebih aman.
+Vercel mendeteksi `src/main.ts` sebagai entrypoint NestJS dan menjalankannya sebagai satu Vercel
+Function. Development tetap dapat memakai Bun.
 
-Setelah deploy, tes `https://nama-nest.vercel.app/products`.
+Setelah deploy, tes `https://nama-nest.vercel.app/health`.
 
 ## 4. Project frontend
 
@@ -71,22 +77,16 @@ Setelah deploy, tes `https://nama-nest.vercel.app/products`.
 - Install Command: `npm install`
 - Build Command: `npm run build`
 - Environment Variables:
-  - `DATABASE_URL`
-  - `AUTH_SECRET`
-  - `AUTH_URL=https://nama-frontend.vercel.app`
-  - `AUTH_TRUST_HOST=true`
-  - seluruh credential Google, Facebook, dan TikTok
   - `NEXT_PUBLIC_API_URL=https://nama-express.vercel.app`
-  - `INTERNAL_API_SECRET`
 
-`INTERNAL_API_SECRET` wajib identik pada ketiga project. Frontend memakai satu backend aktif melalui
-`NEXT_PUBLIC_API_URL`; ganti nilainya ke URL Nest lalu redeploy jika ingin berpindah backend.
+Frontend memakai satu backend aktif melalui `NEXT_PUBLIC_API_URL`; ganti nilainya ke URL Nest lalu
+redeploy jika ingin berpindah backend. Rewrite Next.js meneruskan `/api/auth/*` dan `/api/admin/*` ke
+backend tersebut, sehingga tidak ada API handler atau Prisma di project web.
 
 Daftarkan callback OAuth production:
 
 - `https://nama-frontend.vercel.app/api/auth/callback/google`
 - `https://nama-frontend.vercel.app/api/auth/callback/facebook`
-- `https://nama-frontend.vercel.app/api/auth/callback/tiktok`
 
 Jika frontend memiliki beberapa domain yang harus diizinkan oleh backend, pisahkan dengan koma pada
 `FRONTEND_URL`, misalnya:

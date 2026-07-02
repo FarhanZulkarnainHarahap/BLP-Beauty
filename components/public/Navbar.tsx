@@ -28,7 +28,7 @@ export function Navbar() {
           ))}
         </nav>
         <Link href="/" className="serif text-2xl tracking-[.18em]">
-          MARA
+          BLP
         </Link>
         <nav className="hidden items-center gap-7 md:flex">
           {links.slice(2).map(([label, href]) => (
